@@ -1,0 +1,27 @@
+.add-feed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+  padding: 94px 30px 30px;
+  z-index: 3;
+  animation-name: slideUp;
+  animation-duration: 0.4s;
+}
+
+.add-feed--slide-down {
+  animation-name: slideDown;
+}
+
+
+@keyframes slideUp {
+  from {top: 100vh}
+  to {top: 0;}
+}
+
+@keyframes slideDown {
+  from {top: 0}
+  to {top: 100vh}
+}

@@ -1,0 +1,44 @@
+*, html, body {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.content {
+  padding: 20px;
+}
+
+.feed {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+
+  .ant-card-cover {
+    max-height: 300px;
+    overflow: hidden;
+  }
+}
+
+.btn-add-feed {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  z-index: 2;
+  font-size: 30px;
+  height: auto;
+  border: transparent;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.margin-right-20 {
+  margin-right: 20px;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}

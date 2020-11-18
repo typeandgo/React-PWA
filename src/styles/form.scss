@@ -1,0 +1,42 @@
+.form {
+  position: relative;
+  margin-bottom: 10px;
+
+  .ant-form-item-label {
+    padding: 0;
+    line-height: 20px;
+  }
+
+  .ant-form-item-control {
+    line-height: 24px;
+  }
+
+  &--vertical {
+    .ant-form-item {
+      display: block !important;
+
+      .ant-form-item-control {
+        max-width: 100%;
+      }
+
+      .ant-form-item-label {
+        max-width: 100%;
+        line-height: 1.2em;
+
+        > label {
+          height: auto;
+        }
+      }
+    }
+  }
+
+  .ant-form-item {
+    margin-bottom: 8px;
+
+    &.text-left {
+      .ant-form-item-label {
+        text-align: left;
+      }
+    }
+  }
+}

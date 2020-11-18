@@ -1,0 +1,22 @@
+.header {
+  position: relative;
+  text-align: center;
+  z-index: 2;
+
+  .menu-button {
+    position: absolute;
+    left: 20px;
+    color: #ffffff;
+    margin: 13px 24px 16px 0;
+    line-height: 30px;
+    font-size: 20px;
+  }
+
+  .logo {
+    display: inline-block;
+    margin: 16px 24px 16px 0;
+    line-height: 30px;
+    color: #ffffff;
+    font-size: 20px;
+  }
+}
