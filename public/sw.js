@@ -5,7 +5,7 @@ var CACHE_STATIC_NAME = 'static-v3';
 var CACHE_DYNAMIC_NAME = 'dynamic-v1';
 
 self.addEventListener('install', function(event) {
-  console.log('[SW] Installing service worker...', event);
+  console.log('[SW] Installing service worker...');
 
   // STATIC CACHING (App Shell Caching)
   event.waitUntil(
@@ -49,7 +49,7 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('activate', function(event) {
-  console.log('[SW] Activating service worker...', event);
+  console.log('[SW] Activating service worker...');
 
   // DELETE OLD CACHES
   event.waitUntil(
@@ -119,3 +119,22 @@ self.addEventListener('fetch', function(event) {
 //     fetch(event.request)
 //   );
 // });
+
+// STRATEGY: Network with cache fallback (Network first with dynamic caching)
+// Firstly request data from network
+// If request fails, return data from cache
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    fetch(event.request)
+      .then(function(res) {
+        return caches.open(CACHE_DYNAMIC_NAME)
+            .then(function(cache) {
+              cache.put(event.request.url, res.clone());
+              return res;
+            })
+      })
+      .catch(function(err) {
+        return caches.match(event.request);
+      })    
+  );
+});

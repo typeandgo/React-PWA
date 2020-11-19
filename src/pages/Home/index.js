@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from 'antd';
@@ -10,6 +11,8 @@ import { installationBanner } from 'utils/installationBanner';
 const Home = () => {
   const [showAddFeed, setShowAddFeed] = useState(false);
   const [feedsLoaded, setFeedsLoaded] = useState(false);
+  const apiUrl = 'https://httpbin.org/get';
+  let dataReceivedFromNetwork = false;
 
   const closeAddFeed = () => {
     const addFeedContainer = document.querySelector('.add-feed');
@@ -20,34 +23,44 @@ const Home = () => {
     }, 390)
   }
 
-  const loadFeeds = async () => {
+  const loadFeedsFromNetork = async () => {
     try {
-      const result = await axios.get('https://httpbin.org/get');
-      console.log('result: ', result.data);
-
+      await axios.get(apiUrl);
+      dataReceivedFromNetwork = true;
       setFeedsLoaded(true);
+      console.log('Data from network');
 
     } catch (err) {
       console.log('Fetch error: ', err);
-
-      setFeedsLoaded(false);
     }
   }
 
+  // STRATEGY: Cache then network
+  const loadFeedsFromCache = () => {
+    if ('caches' in window) {
+      caches.match(apiUrl)
+        .then(function(response) {
+          if (response) {
+            return response.json();
+          }
+        })
+        .then(function(data) {
+          if (!dataReceivedFromNetwork) {
+            setFeedsLoaded(true);
+            console.log('Data from cache');
+          }
+        })
+    }
+  }
+ 
   useEffect(() => {
-    loadFeeds();
+    loadFeedsFromCache();
+    loadFeedsFromNetork();
   }, []);
 
   return (
     <AppLayout>
-      { feedsLoaded &&
-        <>
-          <Feed />
-          <Feed />
-          <Feed />
-          <Feed />
-        </>
-      }
+      { feedsLoaded && <Feed /> }
 
       <Button className='btn-add-feed' danger onClick={ () => {
         setShowAddFeed(true);
