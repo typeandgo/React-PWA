@@ -1,7 +1,7 @@
 let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', function(event) {
-  console.log('beforeinstallprompt event fired!');
+  // console.log('beforeinstallprompt event fired!');
 
   event.preventDefault();
 
@@ -21,11 +21,11 @@ export const installationBanner = () => {
 
       if (choiceResult.outcome === 'dismissed') {
 
-        console.log('Add to home screen ignored');
+        // console.log('Add to home screen ignored');
 
       } else {
 
-        console.log('Add to home screen accepted');
+        // console.log('Add to home screen accepted');
       };
 
       deferredPrompt = false; // User made a choice so not suggest again.
