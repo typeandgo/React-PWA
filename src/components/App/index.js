@@ -6,6 +6,7 @@ import 'styles/index.scss';
 import NotFound from 'pages/NotFound';
 import Home from 'pages/Home';
 import About from 'pages/About';
+import Fallback from 'pages/Fallback';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <Switch>
         <Route exact path={ '/' } component={ Home } />
         <Route exact path={ '/about' } component={ About } />
+        <Route exact path={ '/fallback' } component={ Fallback } />
         <Route component={ NotFound } />
       </Switch>
     </Router>

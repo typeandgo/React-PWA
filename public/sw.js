@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-restricted-globals */
 
-var CACHE_STATIC_NAME = 'static-v1';
+var CACHE_STATIC_NAME = 'static-v3';
 var CACHE_DYNAMIC_NAME = 'dynamic-v1';
 
 self.addEventListener('install', function(event) {
@@ -15,6 +15,7 @@ self.addEventListener('install', function(event) {
           cache.addAll([
             '/',
             '/index.html',
+            '/fallback',
             '/static/js/bundle.js',
             '/static/js/0.chunk.js',
             '/static/js/main.chunk.js',
@@ -66,6 +67,7 @@ self.addEventListener('activate', function(event) {
   return self.clients.claim();
 });
 
+// STRATEGY: Cahce with Network Fallback
 self.addEventListener('fetch', function(event) {
   // console.log('[SW] Fetching something...', event);
   event.respondWith(
@@ -80,7 +82,8 @@ self.addEventListener('fetch', function(event) {
           // Return from network
           return fetch(event.request)
 
-            // DYNAMIC CACHING 
+            // DYNAMIC CACHING
+            // Cache every fetched data not list in static cache
             .then(function(res) {
               return caches.open(CACHE_DYNAMIC_NAME)
                 .then(function(cache) {
@@ -89,9 +92,30 @@ self.addEventListener('fetch', function(event) {
                 })
             })
             .catch(function(err) {
-
+              console.log('Fetch error: ', err);
+              return caches.open(CACHE_STATIC_NAME)
+                .then(function(cache) {
+                  return cache.match('/fallback');
+                })
             })
         }
       })
   );
 });
+
+
+// STRATEGY: Cahce Only
+// Dangerous for dynamic content site
+// self.addEventListener('fetch', function(event) {
+//   event.respondWith(
+//     caches.match(event.request)
+//   );
+// });
+
+// STRATEGY: Network Only
+// Normal behavior (don't cache anything)
+// self.addEventListener('fetch', function(event) {
+//   event.respondWith(
+//     fetch(event.request)
+//   );
+// });
