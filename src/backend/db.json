@@ -1,0 +1,26 @@
+{
+  "posts": [
+    { 
+      "id": 1, 
+      "title": "Europe Street Beat", 
+      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
+      "location": "Paris"
+    },
+    { 
+      "id": 2, 
+      "title": "Underground Image", 
+      "image": "https://media.thecoolhour.com/wp-content/uploads/2019/04/15154236/5-nodress.jpg",
+      "location": "Tokio"
+    }
+  ],
+  "comments": [
+    { 
+      "id": 1, 
+      "body": "some comment", 
+      "postId": 1
+    }
+  ],
+  "profile": { 
+    "name": "typicode" 
+  }
+}

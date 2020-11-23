@@ -95,7 +95,7 @@ self.addEventListener('activate', function(event) {
 
 // STRATEGY: BOTH: 1- Cache then Network / 2- Cache Only / 3- Cahce with Network fallback
 self.addEventListener('fetch', function(event) {
-  var apiUrl = 'https://httpbin.org/get';
+  var apiUrl = 'http://localhost:3004/posts';
 
   // 1- Cahce then Network
   if (event.request.url.indexOf(apiUrl) > -1) {

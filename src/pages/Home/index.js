@@ -10,8 +10,8 @@ import { installationBanner } from 'utils/installationBanner';
 
 const Home = () => {
   const [showAddFeed, setShowAddFeed] = useState(false);
-  const [feedsLoaded, setFeedsLoaded] = useState(false);
-  const apiUrl = 'https://httpbin.org/get';
+  const [feedsData, setFeedsData] = useState([]);
+  const apiUrl = 'http://localhost:3004/posts';
   let dataReceivedFromNetwork = false;
 
   const closeAddFeed = () => {
@@ -25,10 +25,10 @@ const Home = () => {
 
   const loadFeedsFromNetork = async () => {
     try {
-      await axios.get(apiUrl);
+      const result = await axios.get(apiUrl);
       dataReceivedFromNetwork = true;
-      setFeedsLoaded(true);
-      console.log('Data from network');
+      setFeedsData(result.data);
+      console.log('Data from network: ', result.data);
 
     } catch (err) {
       console.log('Fetch error: ', err);
@@ -46,8 +46,8 @@ const Home = () => {
         })
         .then(function(data) {
           if (!dataReceivedFromNetwork) {
-            setFeedsLoaded(true);
-            console.log('Data from cache');
+            setFeedsData(data || []);
+            console.log('Data from cache: ', data);
           }
         })
     }
@@ -60,7 +60,9 @@ const Home = () => {
 
   return (
     <AppLayout>
-      { feedsLoaded && <Feed /> }
+      { 
+        feedsData.map(feed => <Feed key={ feed.id } data={ feed } />)
+      }
 
       <Button className='btn-add-feed' danger onClick={ () => {
         setShowAddFeed(true);

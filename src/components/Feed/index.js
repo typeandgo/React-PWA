@@ -1,8 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'antd';
 
-const Feed = () => {
-
+const Feed = ({ data }) => {
   // const saveFeed = () => {
   //   console.log('Feed saved!');
 
@@ -11,7 +11,7 @@ const Feed = () => {
   //   if ('caches' in window) {
   //     caches.open('user-requested')
   //       .then(function(cache) {
-  //         cache.add('https://httpbin.org/get');
+  //         cache.add('http://localhost:3004/posts');
   //         cache.add('https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png')
   //       })
   //   }
@@ -21,13 +21,17 @@ const Feed = () => {
     <Card
     hoverable
     className='feed'
-    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+    cover={<img alt="example" src={ data.image } />}
   >
-    <Card.Meta title="Europe Street beat" description="www.instagram.com" />
+    <Card.Meta title={ data.title } description={ data.location } />
     {/* <Button onClick={ saveFeed } style={{ float: 'right', marginTop: 10 }}>Save</Button> */}
   </Card>
   );
 };
+
+Feed.propTypes = {
+  data: PropTypes.object
+}
 
 export default Feed;
 
