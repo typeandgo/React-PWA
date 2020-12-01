@@ -1,5 +1,10 @@
+/* eslint-disable no-loop-func */
+/* eslint-disable no-undef */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-restricted-globals */
+
+importScripts('/scripts/idb.js'); // Indexed DB Library
+importScripts('/scripts/idbUtils.js');
 
 var CACHE_STATIC_NAME = 'static-v3';
 var CACHE_DYNAMIC_NAME = 'dynamic-v1';
@@ -13,6 +18,8 @@ var STATIC_FILES = [
   'https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap',
   '/manifest.json',
   '/favicon.ico',
+  '/scripts/idb.js',
+  '/scripts/idbUtils.js',
   '/images/icons/favicon-16x16.png',
   '/images/icons/favicon-32x32.png',
   '/images/icons/favicon-96x96.png',
@@ -97,17 +104,21 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
   var apiUrl = 'http://localhost:3004/posts';
 
-  // 1- Cahce then Network
+  // 1- Cahce then Network (Indexed DB version)
   if (event.request.url.indexOf(apiUrl) > -1) {
     event.respondWith(
-      caches.open(CACHE_DYNAMIC_NAME)
-        .then(function(cache) {
-          return fetch(event.request)
-            .then(function(res) {
-              trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
-              cache.put(event.request.url, res.clone());
-              return res;
-            });
+      fetch(event.request)
+        .then(function(res) {
+          var clonedRes = res.clone();
+          clearAllData().then(function() {
+            clonedRes.json()
+              .then(async function(data) {
+                for await (var item of data) {
+                  writeData(item);
+                }
+              })
+          })
+          return res;
         })
     );
   } 

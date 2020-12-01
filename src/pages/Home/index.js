@@ -37,21 +37,15 @@ const Home = () => {
 
   // STRATEGY: Cache then network
   const loadFeedsFromCache = () => {
-    if ('caches' in window) {
-      caches.match(apiUrl)
-        .then(function(response) {
-          if (response) {
-            return response.json();
-          }
-        })
-        .then(function(data) {
-          if (!dataReceivedFromNetwork) {
-            setFeedsData(data || []);
-            console.log('Data from cache: ', data);
-          }
-        })
+    if ('indexedDB' in window) {
+      window.readAllData().then(function(data) {
+        if (!dataReceivedFromNetwork) {
+          console.log('Data from cache: ', data);
+          setFeedsData(data);
+        }
+      })
     }
-  }
+  };
  
   useEffect(() => {
     loadFeedsFromCache();
