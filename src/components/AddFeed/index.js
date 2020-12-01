@@ -6,7 +6,9 @@ const AddFeed = ({closeAddFeed}) => {
   const [form] = Form.useForm();
 
   const onFinish = formData => {
-    console.log('formData: ', formData);
+    if (formData.title.trim() === '' || formData.location.trim() === '') {
+      alert('Please check the inputs!')
+    }
   }
 
   return (
@@ -19,13 +21,13 @@ const AddFeed = ({closeAddFeed}) => {
 
         <Row gutter={ 20 }>
           <Col span={ 24 }>
-            <Form.Item label='Title' name='title'>
+            <Form.Item label='Title' name='title' rules={[{ required: true, message: 'Title can not be empty!' }]}>
               <Input />
             </Form.Item>
           </Col>
 
           <Col span={ 24 }>
-            <Form.Item label='Location' name='location'>
+            <Form.Item label='Location' name='location' rules={[{ required: true, message: 'Location can not be empty!' }]}>
               <Input />
             </Form.Item>
           </Col>
