@@ -43,6 +43,7 @@ var STATIC_FILES = [
   '/images/icons/icon-512x512.png'
 ];
 var MAX_CACHE_ITEMS = 20;
+var apiUrl = 'http://localhost:3004/posts';
 
 function isInArray(string, array) {
   var cachePath;
@@ -102,7 +103,6 @@ self.addEventListener('activate', function(event) {
 
 // STRATEGY: BOTH: 1- Cache then Network / 2- Cache Only / 3- Cahce with Network fallback
 self.addEventListener('fetch', function(event) {
-  var apiUrl = 'http://localhost:3004/posts';
 
   // 1- Cahce then Network (Indexed DB version)
   if (event.request.url.indexOf(apiUrl) > -1) {
@@ -110,11 +110,11 @@ self.addEventListener('fetch', function(event) {
       fetch(event.request)
         .then(function(res) {
           var clonedRes = res.clone();
-          clearAllData().then(function() {
+          clearAllData('feeds').then(function() {
             clonedRes.json()
               .then(async function(data) {
                 for await (var item of data) {
-                  writeData(item);
+                  writeData('feeds', item);
                 }
               })
           })
@@ -239,3 +239,35 @@ self.addEventListener('fetch', function(event) {
 //       })    
 //   );
 // });
+
+self.addEventListener('sync', function(event) {
+  console.log('[SW] background syncing: ', event);
+  if (event.tag === 'sync-new-feed') {
+    console.log('[SW] Syncing new feed');
+    event.waitUntil(
+      readAllData('sync-feeds').then(function(data) {
+        for (var item of data) {
+          fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(item)
+          }).then(function(res) {
+            console.log('Sent data to backend: ', item);
+            if (res.ok) {
+              res.json()
+                .then(function(resData) {
+                  deleteData('sync-feeds', resData.id);
+                })
+            }
+          })
+          .catch(function(err) {
+            console.log('Error occured while sending sync data to backend: ', err);
+          });
+        }
+      })
+    )
+  }
+});

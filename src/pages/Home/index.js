@@ -38,7 +38,7 @@ const Home = () => {
   // STRATEGY: Cache then network
   const loadFeedsFromCache = () => {
     if ('indexedDB' in window) {
-      window.readAllData().then(function(data) {
+      window.readAllData('feeds').then(function(data) {
         if (!dataReceivedFromNetwork) {
           console.log('Data from cache: ', data);
           setFeedsData(data);

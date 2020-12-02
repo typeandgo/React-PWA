@@ -12,8 +12,16 @@
   margin-bottom: 20px;
 
   .ant-card-cover {
-    max-height: 300px;
+    max-height: 150px;
     overflow: hidden;
+  }
+
+  .ant-card-body {
+    padding: 15px 18px;
+  }
+
+  .ant-card-meta-title {
+    margin-bottom: 0;
   }
 }
 
