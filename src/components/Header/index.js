@@ -21,7 +21,13 @@ const Header = () => {
   const displayConfirmNotification = () => {
     const title = 'Successfully subscribed';
     const options = {
-      body: 'You successfully subscribed to our notification service.'
+      body: 'You successfully subscribed to our notification service.',
+      icon: '/images/icons/favicon-96x96.png',
+      image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      dir: 'ltr',
+      lang: 'en-US',
+      vibrate: [100, 50, 100, 50],
+      badge: '/images/icons/favicon-96x96.png'
     };
 
     // 1- JS Way
