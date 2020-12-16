@@ -55,6 +55,17 @@
       "location": "loc"
     }
   ],
+  "subscriptions": [
+    {
+      "endpoint": "https://fcm.googleapis.com/fcm/send/coM_fbohm8Q:APA91bEoTM1EQ-0PQl2lOMlpVflvNvI0563l6OiSkXMmPFsx3HK7-MkGv2cCCLwiyMjTsZ5pi06t666AZiPJHZAGi1ITsUCHUPifY_EPhP1Jhdq6ANfd7XJcSshZN7HeH4PdBcb_v7iC",
+      "expirationTime": null,
+      "keys": {
+        "p256dh": "BMZVEjxMhnjDpjyowsHabCf2Z93jpNzoaMMfQd55CM3MZaSaSN-NImgWX1vi8wo4XPTfVBmSkjzMTJszSBJgVRc",
+        "auth": "6vZHokRr3cX81Yx1CpAggA"
+      },
+      "id": 1
+    }
+  ],
   "comments": [
     {
       "id": 1,

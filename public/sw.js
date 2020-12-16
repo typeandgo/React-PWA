@@ -168,7 +168,6 @@ self.addEventListener('fetch', function(event) {
   };
 });
 
-
 // STRATEGY: Cahce Only
 // Dangerous for dynamic content site
 // self.addEventListener('fetch', function(event) {
@@ -271,3 +270,24 @@ self.addEventListener('sync', function(event) {
     )
   }
 });
+
+self.addEventListener('notificationclick', function(event) {
+  var notification = event.notification;
+  var action = event.action
+  
+  console.log('notification: ', notification);
+  console.log('action: ', action);
+
+  if (action === 'confirm') {
+    console.log('Confirm was chosed');
+    notification.close();
+  } else {
+    console.log('Cancel was chosed');
+    notification.close();
+  }
+});
+
+self.addEventListener('notificationclose', function(event) {
+  console.log('Notification was closed: ', event);
+});
+
