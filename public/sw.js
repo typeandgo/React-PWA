@@ -291,3 +291,18 @@ self.addEventListener('notificationclose', function(event) {
   console.log('Notification was closed: ', event);
 });
 
+self.addEventListener('push', function(event) {
+
+  // Normalde buraya datanın server'dan gelmesi gerekiyor.
+  // Ama server entegrasyonu yapamadığım için devTools üzerinden alınan push'ları gösteriyor.
+
+  var options = {
+    body: event.data.text(),
+    icon: '/images/icons/favicon-96x96.png',
+    badge: '/images/icons/favicon-96x96.png'
+  }
+
+  event.waitUntil(
+    self.registration.showNotification('Push notification from server', options)
+  )
+});
