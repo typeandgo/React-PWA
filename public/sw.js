@@ -282,8 +282,25 @@ self.addEventListener('notificationclick', function(event) {
     console.log('Confirm was chosed');
     notification.close();
   } else {
-    console.log('Cancel was chosed');
-    notification.close();
+    console.log('Notification clicked');
+    event.waitUntil(
+      clients.matchAll()
+        .then(function(clis) {
+          var client = clis.find(function(c) {
+            return c.visibilityState === 'visible';
+          });
+
+          // notifiaction.data üzerinden BE > SW bilgi taşınabilir ve bu bilgi burada kullanılabilir.
+
+          if (client !== undefined) {
+            client.navigate('http://localhost:3000?param=lorem');
+            client.focus();
+          } else {
+            clients.openWindow('http://localhost:3000?param=lorem');
+          }
+          notification.close();
+        })
+    )
   }
 });
 
@@ -296,13 +313,29 @@ self.addEventListener('push', function(event) {
   // Normalde buraya datanın server'dan gelmesi gerekiyor.
   // Ama server entegrasyonu yapamadığım için devTools üzerinden alınan push'ları gösteriyor.
 
+  // Fallback data, eğer BE'den data gelmez ise bunu kullanır.
+  var data = {
+    title: 'New!',
+    content: 'Soemething new happened!',
+    openUrl: '/'
+  };
+
+  // Eğer data BE'den gelse idi, fallback data ile replace olacaktı
+  // if (event.data) {
+  //   data = JSON.parse(event.data.text());
+  // }
+
+
   var options = {
-    body: event.data.text(),
+    body: data.content,
     icon: '/images/icons/favicon-96x96.png',
-    badge: '/images/icons/favicon-96x96.png'
-  }
+    badge: '/images/icons/favicon-96x96.png',
+    data: {
+      url: data.openUrl
+    }
+  };
 
   event.waitUntil(
     self.registration.showNotification('Push notification from server', options)
-  )
+  );
 });
