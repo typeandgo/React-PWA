@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { PropTypes } from 'prop-types';
-import { Form, Row, Col, Input, Button, message, Upload, Divider } from 'antd';
+import { Form, Row, Col, Input, Button, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 const AddFeed = ({closeAddFeed}) => {
   const [form] = Form.useForm();
+  const player = useRef(null);
   const [showImagePicker, setShowImagePicker] = useState(false);
-  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
-  const [videoSrcObject, setVideoSrcObject] = useState(null)
+  const [showVideoPlayer, setShowVideoPlayer] = useState(true);
 
   useEffect(() => {
     initializeMedia();
@@ -35,8 +36,9 @@ const AddFeed = ({closeAddFeed}) => {
 
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
+        console.log('stream: ', stream);
         setShowVideoPlayer(true);
-        setVideoSrcObject(stream);
+        player.current.srcObject = stream;
       })
       .catch(err => {
         setShowImagePicker(true);
@@ -84,7 +86,8 @@ const AddFeed = ({closeAddFeed}) => {
   const onClose = () => {
     setShowImagePicker(false);
     setShowVideoPlayer(false);
-    setVideoSrcObject(null)
+    player.current.srcObject = null;
+
     closeAddFeed();
   }
 
@@ -101,15 +104,14 @@ const AddFeed = ({closeAddFeed}) => {
           {
             showVideoPlayer
             &&
-            <video id='player' src={ videoSrcObject } autoPlay></video>
+            <>
+              <video id='player' ref={ player } autoPlay={ true } style={{ width: '100%', height: 'auto' }}></video>
+              <Button type='primary'>Capture</Button>
+            </>
           }
 
           <canvas id='canvas' width='320' height='240'></canvas>
-
-          <Divider/>
-
-          <Button type='primary'>Capture</Button>
-
+          
           { 
             showImagePicker
             && <>
