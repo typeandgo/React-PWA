@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { PropTypes } from 'prop-types';
 import { Form, Row, Col, Input, Button, message, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 
 const AddFeed = ({closeAddFeed, loadData}) => {
   const [form] = Form.useForm();
@@ -15,9 +15,13 @@ const AddFeed = ({closeAddFeed, loadData}) => {
   const [showCanvas, setShowCanvas] = useState(false);
   const [image, setImage] = useState(null);
   const [fileList, setFileList] = useState([]);
+  const [showGetLocationButton, setShowGetLocationButton] = useState(false);
+  const [isGeoLocationLoading, setIsGeoLocationLoading] = useState(false);
+  const [fetchedLocation, setFetchedLocation] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
     initializeMedia();
+    initializeLocation();
   }, []);
 
   const initializeMedia = () => {
@@ -50,6 +54,41 @@ const AddFeed = ({closeAddFeed, loadData}) => {
       });
   };
 
+  const initializeLocation = () => {
+    if ('geolocation' in navigator) {
+      setShowGetLocationButton(true);
+    }
+  }
+
+  const getLocation = () => {
+
+    setShowGetLocationButton(false);
+    setIsGeoLocationLoading(true);
+
+    navigator.geolocation.getCurrentPosition(position => {
+
+      setFetchedLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
+
+      form.setFieldsValue({
+        location: 'İstanbul'
+      });
+
+      setIsGeoLocationLoading(false);
+
+    }, err => {
+
+      setShowGetLocationButton(true);
+      setIsGeoLocationLoading(false);
+      setFetchedLocation({lat: 0, lng: 0});
+      message.error('Could not fetch the location, please enter manually!');
+      console.log('Geolocation error: ', err);
+
+    }, { timeout: 7000 });
+  }
+
   const onFinish = formData => {
     if (formData.title.trim() === '' || formData.location.trim() === '') {
       alert('Please check the inputs!')
@@ -58,6 +97,7 @@ const AddFeed = ({closeAddFeed, loadData}) => {
       const data = {
         id: new Date().toISOString(),
         image: image,
+        rawLocation: fetchedLocation,
         ...formData
       }
 
@@ -170,7 +210,10 @@ const AddFeed = ({closeAddFeed, loadData}) => {
 
           <Col span={ 24 }>
             <Form.Item label='Location' name='location' rules={[{ required: true, message: 'Location can not be empty!' }]}>
-              <Input addonAfter={ <Button size='small'>Get Location</Button> } />
+              <Input addonAfter={ 
+                showGetLocationButton 
+                  ? <Button size='small' onClick={ getLocation }>Get Location</Button> 
+                  : (isGeoLocationLoading ? <LoadingOutlined /> : false) } />
             </Form.Item>
           </Col>
 
