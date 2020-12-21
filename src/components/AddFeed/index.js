@@ -7,9 +7,13 @@ import { UploadOutlined } from '@ant-design/icons';
 
 const AddFeed = ({closeAddFeed}) => {
   const [form] = Form.useForm();
-  const player = useRef(null);
+  const playerRef = useRef(null);
+  const canvasRef = useRef(null);
   const [showImagePicker, setShowImagePicker] = useState(false);
-  const [showVideoPlayer, setShowVideoPlayer] = useState(true);
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [showCaptureButton, setShowCaptureButton] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
+  const [videoStream, setVideoStream] = useState(null);
 
   useEffect(() => {
     initializeMedia();
@@ -36,9 +40,10 @@ const AddFeed = ({closeAddFeed}) => {
 
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
-        console.log('stream: ', stream);
         setShowVideoPlayer(true);
-        player.current.srcObject = stream;
+        setShowCaptureButton(true);
+        playerRef.current.srcObject = stream;
+        setVideoStream(stream);
       })
       .catch(err => {
         setShowImagePicker(true);
@@ -83,11 +88,26 @@ const AddFeed = ({closeAddFeed}) => {
     }
   };
 
+  const stopVideoStream = () => {
+    videoStream.getVideoTracks().forEach(track => {
+      track.stop();
+    });
+  }
+
+  const captureImage = () => {
+    setShowCanvas(true);
+    const context = canvasRef.current.getContext('2d');
+    context.drawImage(playerRef.current, 0, 0, canvasRef.current.width, playerRef.current.videoHeight / (playerRef.current.videoWidth / canvasRef.current.width));
+    stopVideoStream();
+    setShowVideoPlayer(false);
+    setShowCaptureButton(false);
+  }
+
   const onClose = () => {
+    stopVideoStream();
     setShowImagePicker(false);
     setShowVideoPlayer(false);
-    player.current.srcObject = null;
-
+    setShowCaptureButton(false);
     closeAddFeed();
   }
 
@@ -101,16 +121,11 @@ const AddFeed = ({closeAddFeed}) => {
 
         <div id='pick-image' className='text-center'>
           
-          {
-            showVideoPlayer
-            &&
-            <>
-              <video id='player' ref={ player } autoPlay={ true } style={{ width: '100%', height: 'auto' }}></video>
-              <Button type='primary'>Capture</Button>
-            </>
-          }
 
-          <canvas id='canvas' width='320' height='240'></canvas>
+          <video ref={ playerRef } autoPlay={ true } style={{ width: 320, height: 240, display: showVideoPlayer ? 'block' : 'none' }} className='margin-0-auto'></video>
+          <Button type='primary' className='margin-0-auto margin-top-20' onClick={ captureImage } style={{ display: showCaptureButton ? 'block' : 'none' }}>Capture</Button>
+          <canvas ref={ canvasRef } width='320' height='240' style={{ display: showCanvas ? 'block' : 'none' }} className='margin-0-auto'></canvas>
+    
           
           { 
             showImagePicker
