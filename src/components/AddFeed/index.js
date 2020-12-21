@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 import { Form, Row, Col, Input, Button, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
-const AddFeed = ({closeAddFeed}) => {
+const AddFeed = ({closeAddFeed, loadData}) => {
   const [form] = Form.useForm();
   const playerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -13,6 +13,8 @@ const AddFeed = ({closeAddFeed}) => {
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const [showCaptureButton, setShowCaptureButton] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
+  const [image, setImage] = useState(null);
+  const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     initializeMedia();
@@ -55,34 +57,15 @@ const AddFeed = ({closeAddFeed}) => {
 
       const data = {
         id: new Date().toISOString(),
-        image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        image: image,
         ...formData
       }
 
-      // If there is no internet connection keep data for bacground sync
-      if (!navigator.onLine && 'serviceWorker' in navigator && 'SyncManager' in window) {
-        navigator.serviceWorker.ready
-          .then(function(sw) {
-            window.writeData('sync-feeds', data)
-              .then(function() {
-                return sw.sync.register('sync-new-feed');
-              })
-              .then(function() {
-                message.info('Your Feed was saved for syncing!');
-                onClose();
-              })
-              .catch(function(err) {
-                console.log('Background sync error: ', err);
-              })
-          });
-      } else {
-
-        // Have internet connection so, send data to backend
-        axios.post('http://localhost:3004/posts', data).then(function(res) {
-          message.success('Sent data!');
-          onClose();
-        });
-      }
+      axios.post('http://localhost:3004/posts', data).then(function(res) {
+        message.success('Sent data!');
+        loadData();
+        onClose();
+      });
     }
   };
 
@@ -96,17 +79,52 @@ const AddFeed = ({closeAddFeed}) => {
     setShowCanvas(true);
     const context = canvasRef.current.getContext('2d');
     context.drawImage(playerRef.current, 0, 0, canvasRef.current.width, playerRef.current.videoHeight / (playerRef.current.videoWidth / canvasRef.current.width));
+    setImage(canvasRef.current.toDataURL());
     stopVideoStream();
     setShowVideoPlayer(false);
     setShowCaptureButton(false);
   }
 
   const onClose = () => {
-    stopVideoStream();
+    if (showVideoPlayer) {
+      stopVideoStream();
+    }
     setShowImagePicker(false);
     setShowVideoPlayer(false);
     setShowCaptureButton(false);
     closeAddFeed();
+  }
+
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
+  const converAndSetImage = async file => {
+    const image = await toBase64(file);
+    console.log('image: ', image);
+    setImage(image);
+  };
+
+  const onRemove = file => {
+    const index = fileList.indexOf(file);
+    let newFileList = fileList.slice();
+    newFileList.splice(index, 1);
+    setFileList(newFileList);
+  };
+
+  const beforeUpload = file => {
+    
+    setFileList([file]);
+    converAndSetImage(file);
+
+    return false;
+  };
+
+  const onUploadChange = e => {
+    console.log('e: ', e);
   }
 
   return (
@@ -119,17 +137,23 @@ const AddFeed = ({closeAddFeed}) => {
 
         <div id='pick-image' className='text-center'>
           
-
           <video ref={ playerRef } autoPlay={ true } style={{ width: 320, height: 240, display: showVideoPlayer ? 'block' : 'none' }} className='margin-0-auto'></video>
+          
           <Button type='primary' className='margin-0-auto margin-top-20' onClick={ captureImage } style={{ display: showCaptureButton ? 'block' : 'none' }}>Capture</Button>
+          
           <canvas ref={ canvasRef } width='320' height='240' style={{ display: showCanvas ? 'block' : 'none' }} className='margin-0-auto'></canvas>
     
-          
           { 
             showImagePicker
             && <>
             <h6 className='margin-top-20'>Picak an image instead</h6>
-            <Upload accept='image/*'>
+            <Upload
+              accept='image/*'
+              fileList={ fileList }
+              onRemove={ onRemove }
+              beforeUpload={ beforeUpload }
+              onChange={ onUploadChange }
+            >
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           </> 
@@ -157,7 +181,6 @@ const AddFeed = ({closeAddFeed}) => {
             </Form.Item>
           </Col>
         </Row>
-
       </Form>
     </div>
   );
@@ -166,5 +189,6 @@ const AddFeed = ({closeAddFeed}) => {
 export default AddFeed;
 
 AddFeed.propTypes = {
-  closeAddFeed: PropTypes.func
+  closeAddFeed: PropTypes.func,
+  loadData: PropTypes.func
 }
