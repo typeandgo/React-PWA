@@ -13,7 +13,6 @@ const AddFeed = ({closeAddFeed}) => {
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const [showCaptureButton, setShowCaptureButton] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
-  const [videoStream, setVideoStream] = useState(null);
 
   useEffect(() => {
     initializeMedia();
@@ -43,7 +42,6 @@ const AddFeed = ({closeAddFeed}) => {
         setShowVideoPlayer(true);
         setShowCaptureButton(true);
         playerRef.current.srcObject = stream;
-        setVideoStream(stream);
       })
       .catch(err => {
         setShowImagePicker(true);
@@ -89,7 +87,7 @@ const AddFeed = ({closeAddFeed}) => {
   };
 
   const stopVideoStream = () => {
-    videoStream.getVideoTracks().forEach(track => {
+    playerRef.current.srcObject.getVideoTracks().forEach(track => {
       track.stop();
     });
   }
