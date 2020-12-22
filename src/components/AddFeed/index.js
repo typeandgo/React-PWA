@@ -186,7 +186,7 @@ const AddFeed = ({closeAddFeed, loadData}) => {
           { 
             showImagePicker
             && <>
-            <h6 className='margin-top-20'>Picak an image instead</h6>
+            <h6 className='margin-top-20'>Picak an image</h6>
             <Upload
               accept='image/*'
               fileList={ fileList }

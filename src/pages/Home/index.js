@@ -6,7 +6,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import AppLayout from 'components/AppLayout';
 import Feed from 'components/Feed';
 import AddFeed from 'components/AddFeed';
-import { installationBanner } from 'utils/installationBanner';
 
 const Home = () => {
   const [showAddFeed, setShowAddFeed] = useState(false);
@@ -45,7 +44,6 @@ const Home = () => {
 
       <Button className='btn-add-feed' danger onClick={ () => {
         setShowAddFeed(true);
-        installationBanner();
       } }><PlusOutlined /></Button>
       
       {
