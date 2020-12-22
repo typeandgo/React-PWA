@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-globals */
 
 var CACHE_STATIC_NAME = 'static-v3';
+var CACHE_DYNAMIC_NAME = 'dynamic-v1';
 var STATIC_FILES = [
   '/',
   '/index.html',
@@ -57,7 +58,7 @@ self.addEventListener('activate', function(event) {
 // STRATEGY: Cahce with Network Fallback
 self.addEventListener('fetch', function(event) {
   // console.log('[SW] Fetching something...', event);
-  
+
   event.respondWith(
     // Retrieve data from cache if available
     caches.match(event.request)
@@ -67,7 +68,24 @@ self.addEventListener('fetch', function(event) {
           return response;
         } else {
           // Return from network
-          return fetch(event.request);
+          return fetch(event.request)
+
+            // DYNAMIC CACHING
+            // Cache every fetched data not list in static cache
+            .then(function(res) {
+              return caches.open(CACHE_DYNAMIC_NAME)
+                .then(function(cache) {
+                  cache.put(event.request.url, res.clone());
+                  return res;
+                })
+            })
+            .catch(function(err) {
+              console.log('Fetch error: ', err);
+              return caches.open(CACHE_STATIC_NAME)
+                .then(function(cache) {
+                  return cache.match('/fallback');
+                })
+            })
         }
       })
   );
