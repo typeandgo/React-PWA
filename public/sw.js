@@ -68,32 +68,21 @@ self.addEventListener('activate', function(event) {
   return self.clients.claim();
 });
 
-// STRATEGY: Cahce with Network fallback
+// STRATEGY: Network with cache fallback (Network first with dynamic caching)
+// Firstly request data from network
+// If request fails, return data from cache
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    // Retrieve data from cache if available
-    caches.match(event.request)
-      .then(function(response) {
-        if (response) {
-          // Return from cahce
-          return response;
-        } else {
-          // Return from network
-          return fetch(event.request)
-
-            // DYNAMIC CACHING
-            // Cache every fetched data not list in static cache
-            .then(function(res) {
-              return caches.open(CACHE_DYNAMIC_NAME)
-                .then(function(cache) {
-                  cache.put(event.request.url, res.clone());
-                  return res;
-                })
+    fetch(event.request)
+      .then(function(res) {
+        return caches.open(CACHE_DYNAMIC_NAME)
+            .then(function(cache) {
+              cache.put(event.request.url, res.clone());
+              return res;
             })
-            .catch(function(err) {
-              console.log('Fetch error: ', err);
-            });
-        };
-    })
+      })
+      .catch(function(err) {
+        return caches.match(event.request);
+      })    
   );
 });
