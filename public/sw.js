@@ -81,24 +81,7 @@ self.addEventListener('fetch', function(event) {
           return response;
         } else {
           // Return from network
-          return fetch(event.request)
-
-            // DYNAMIC CACHING
-            // Cache every fetched data not list in static cache
-            .then(function(res) {
-              return caches.open(CACHE_DYNAMIC_NAME)
-                .then(function(cache) {
-                  cache.put(event.request.url, res.clone());
-                  return res;
-                })
-            })
-            .catch(function(err) {
-              console.log('Fetch error: ', err);
-              return caches.open(CACHE_STATIC_NAME)
-                .then(function(cache) {
-                  return cache.match('/fallback');
-                })
-            })
+          return fetch(event.request);
         }
       })
   );

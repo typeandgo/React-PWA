@@ -11,7 +11,6 @@ const Home = () => {
   const [showAddFeed, setShowAddFeed] = useState(false);
   const [feedsData, setFeedsData] = useState([]);
   const apiUrl = 'http://localhost:3004/posts';
-  let dataReceivedFromNetwork = false;
 
   const closeAddFeed = () => {
     const addFeedContainer = document.querySelector('.add-feed');
@@ -25,7 +24,6 @@ const Home = () => {
   const loadFeedsFromNetork = async () => {
     try {
       const result = await axios.get(apiUrl);
-      dataReceivedFromNetwork = true;
       setFeedsData(result.data);
       console.log('Data from network: ', result.data);
 
@@ -33,27 +31,8 @@ const Home = () => {
       console.log('Fetch error: ', err);
     }
   }
-
-  // STRATEGY: Cache then network
-  const loadFeedsFromCache = () => {
-    if ('caches' in window) {
-      caches.match(apiUrl)
-        .then(function(response) {
-          if (response) {
-            return response.json();
-          }
-        })
-        .then(function(data) {
-          if (!dataReceivedFromNetwork) {
-            setFeedsData(data || []);
-            console.log('Data from cache: ', data);
-          }
-        })
-    }
-  }
  
   useEffect(() => {
-    loadFeedsFromCache();
     loadFeedsFromNetork();
   }, []);
 
