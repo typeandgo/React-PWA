@@ -148,19 +148,13 @@ self.addEventListener('fetch', function(event) {
               .then(function(res) {
                 return caches.open(CACHE_DYNAMIC_NAME)
                   .then(function(cache) {
-                    trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
+                    // trimCache(CACHE_DYNAMIC_NAME, MAX_CACHE_ITEMS);
                     cache.put(event.request.url, res.clone());
                     return res;
                   })
               })
               .catch(function(err) {
                 console.log('Fetch error: ', err);
-                return caches.open(CACHE_STATIC_NAME)
-                  .then(function(cache) {
-                    if (event.request.headers.get('accept').includes('text/html')) {
-                      return cache.match('/fallback');
-                    };
-                  });
               });
           };
       })
