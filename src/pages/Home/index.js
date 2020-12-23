@@ -32,8 +32,6 @@ const Home = () => {
       console.log('Fetch error: ', err);
     }
   }
-
-
  
   useEffect(() => {
     loadFeedsFromNetork();
