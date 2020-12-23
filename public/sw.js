@@ -52,6 +52,19 @@ self.addEventListener('install', function(event) {
 self.addEventListener('activate', function(event) {
   console.log('[SW] Activating service worker...');
 
+  // DELETE OLD CACHES
+  event.waitUntil(
+    caches.keys()
+      .then(function(keyList) {
+        return Promise.all(keyList.map(function(key) {
+          if (key !== CACHE_STATIC_NAME && key !== CACHE_DYNAMIC_NAME) {
+            console.log('[SW] Removing old cache: ', key);
+            return caches.delete(key)
+          }
+        }));
+      })
+  );
+  
   return self.clients.claim();
 });
 
