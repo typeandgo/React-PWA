@@ -1,58 +1,16 @@
 {
   "posts": [
     {
-      "id": 1,
+      "id": "2020-12-02T08:50:16.086Z",
       "title": "Europe Street Beat",
       "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
       "location": "Paris"
     },
     {
-      "id": 2,
+      "id": "2020-12-02T08:52:21.047Z",
       "title": "Underground Image",
       "image": "https://media.thecoolhour.com/wp-content/uploads/2019/04/15154236/5-nodress.jpg",
       "location": "Tokio"
-    },
-    {
-      "id": "2020-12-02T08:50:16.086Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Engin",
-      "location": "İstanbul"
-    },
-    {
-      "id": "2020-12-02T08:52:21.047Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Dilek",
-      "location": "Erzincan"
-    },
-    {
-      "id": "2020-12-02T08:56:03.255Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Engin Öztürk",
-      "location": "Zonguldak"
-    },
-    {
-      "id": "2020-12-02T08:56:17.276Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Dilek Çetin Öztürk",
-      "location": "İstanbul"
-    },
-    {
-      "id": "2020-12-02T10:47:49.188Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Deneme 1",
-      "location": "deneme 1"
-    },
-    {
-      "id": "2020-12-02T10:48:00.003Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Deneme 2",
-      "location": "deneme 2"
-    },
-    {
-      "id": "2020-12-02T10:56:18.874Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Deneme 3",
-      "location": "loc"
     }
   ],
   "comments": [

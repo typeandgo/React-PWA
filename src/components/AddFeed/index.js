@@ -19,6 +19,7 @@ const AddFeed = ({closeAddFeed}) => {
 
       // If there is no internet connection keep data for bacground sync
       if (!navigator.onLine && 'serviceWorker' in navigator && 'SyncManager' in window) {
+        
         navigator.serviceWorker.ready
           .then(function(sw) {
             window.writeData('sync-feeds', data)
@@ -33,6 +34,7 @@ const AddFeed = ({closeAddFeed}) => {
                 console.log('Background sync error: ', err);
               })
           });
+          
       } else {
 
         // Have internet connection so, send data to backend
