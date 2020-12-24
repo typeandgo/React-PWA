@@ -168,77 +168,6 @@ self.addEventListener('fetch', function(event) {
   };
 });
 
-// STRATEGY: Cahce Only
-// Dangerous for dynamic content site
-// self.addEventListener('fetch', function(event) {
-//   event.respondWith(
-//     caches.match(event.request)
-//   );
-// });
-
-// STRATEGY: Network Only
-// Normal behavior (don't cache anything)
-// self.addEventListener('fetch', function(event) {
-//   event.respondWith(
-//     fetch(event.request)
-//   );
-// });
-
-// STRATEGY: Cahce with Network Fallback
-// self.addEventListener('fetch', function(event) {
-//   // console.log('[SW] Fetching something...', event);
-//   event.respondWith(
-
-//     // Retrieve data from cache if available
-//     caches.match(event.request)
-//       .then(function(response) {
-//         if (response) {
-//           // Return from cahce
-//           return response;
-//         } else {
-//           // Return from network
-//           return fetch(event.request)
-
-//             // DYNAMIC CACHING
-//             // Cache every fetched data not list in static cache
-//             .then(function(res) {
-//               return caches.open(CACHE_DYNAMIC_NAME)
-//                 .then(function(cache) {
-//                   cache.put(event.request.url, res.clone());
-//                   return res;
-//                 })
-//             })
-//             .catch(function(err) {
-//               console.log('Fetch error: ', err);
-//               return caches.open(CACHE_STATIC_NAME)
-//                 .then(function(cache) {
-//                   return cache.match('/fallback');
-//                 })
-//             })
-//         }
-//       })
-//   );
-// });
-
-// STRATEGY: Network with cache fallback (Network first with dynamic caching)
-// Firstly request data from network
-// If request fails, return data from cache
-// self.addEventListener('fetch', function(event) {
-//   event.respondWith(
-//     fetch(event.request)
-//       .then(function(res) {
-//         return caches.open(CACHE_DYNAMIC_NAME)
-//             .then(function(cache) {
-//               cache.put(event.request.url, res.clone());
-//               return res;
-//             })
-//       })
-//       .catch(function(err) {
-//         return caches.match(event.request);
-//       })    
-//   );
-// });
-
 self.addEventListener('sync', function(event) {
   console.log('[SW] background syncing: ', event);
   if (event.tag === 'sync-new-feed') {
@@ -282,7 +211,7 @@ self.addEventListener('notificationclick', function(event) {
     console.log('Confirm was chosed');
     notification.close();
   } else {
-    console.log('Notification clicked');
+    console.log('Notification clicked: ', action);
     event.waitUntil(
       clients.matchAll()
         .then(function(clis) {
