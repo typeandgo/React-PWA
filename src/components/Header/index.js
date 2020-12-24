@@ -55,58 +55,7 @@ const Header = () => {
         })
     }
   }
-
-  const configurePushSubscription = () => {
-    if (!('serviceWorker' in navigator)) {
-      return;
-    }
-
-    let reg;
-
-    navigator.serviceWorker.ready
-      .then(function(swreg) {
-
-        reg = swreg;
-
-        return swreg.pushManager.getSubscription();
-      })
-      .then(function(sub) {
-        if (sub === null) { 
-          // Create a new subscription
-          
-          const vapidPublicKey = 'BD2k_zhm8yAPvG2Egzxf6t_PMeXEmhkbQSZK8e5NDV6Zca6GJbZ75-tefkRj7IVATLQtGAp8Ufdp8NH9dyleGC8';
-          const convertedVapidPublicKey = window.urlBase64ToUint8Array(vapidPublicKey);
-
-          return reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: convertedVapidPublicKey
-          });
-
-        } else { 
-          // We have a subscription
-          // So do nothing
-        }
-      })
-      .then(function(newSub) {
-        return fetch('http://localhost:3004/subscriptions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify(newSub)
-        })
-      })
-      .then(function(res) {
-        if (res.ok) {
-          displayConfirmNotification();
-        }
-      })
-      .catch(function(err) {
-        console.log('Subscription error: ', err);
-      });
-  };
-
+  
   const askForNotificationPermission = () => {
     Notification.requestPermission(result => {
 
@@ -118,8 +67,7 @@ const Header = () => {
 
       } else {
 
-        configurePushSubscription();
-        //displayConfirmNotification();
+        displayConfirmNotification();
       };
     });
   };
