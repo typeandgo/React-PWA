@@ -1,92 +1,19 @@
 {
   "posts": [
     {
-      "id": 1,
+      "id": "2020-12-02T08:50:16.086Z",
       "title": "Europe Street Beat",
       "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
       "location": "Paris"
     },
     {
-      "id": 2,
+      "id": "2020-12-02T08:52:21.047Z",
       "title": "Underground Image",
       "image": "https://media.thecoolhour.com/wp-content/uploads/2019/04/15154236/5-nodress.jpg",
       "location": "Tokio"
-    },
-    {
-      "id": "2020-12-02T08:50:16.086Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Engin",
-      "location": "İstanbul"
-    },
-    {
-      "id": "2020-12-02T08:52:21.047Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Dilek",
-      "location": "Erzincan"
-    },
-    {
-      "id": "2020-12-02T08:56:03.255Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Engin Öztürk",
-      "location": "Zonguldak"
-    },
-    {
-      "id": "2020-12-02T08:56:17.276Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Dilek Çetin Öztürk",
-      "location": "İstanbul"
-    },
-    {
-      "id": "2020-12-02T10:47:49.188Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Deneme 1",
-      "location": "deneme 1"
-    },
-    {
-      "id": "2020-12-02T10:48:00.003Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Deneme 2",
-      "location": "deneme 2"
-    },
-    {
-      "id": "2020-12-02T10:56:18.874Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "Deneme 3",
-      "location": "loc"
-    },
-    {
-      "id": "2020-12-16T13:43:35.619Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "dd",
-      "location": "ddd"
-    },
-    {
-      "id": "2020-12-16T13:43:50.322Z",
-      "image": "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      "title": "ddd",
-      "location": "dddd"
     }
   ],
-  "subscriptions": [
-    {
-      "endpoint": "https://fcm.googleapis.com/fcm/send/coM_fbohm8Q:APA91bEoTM1EQ-0PQl2lOMlpVflvNvI0563l6OiSkXMmPFsx3HK7-MkGv2cCCLwiyMjTsZ5pi06t666AZiPJHZAGi1ITsUCHUPifY_EPhP1Jhdq6ANfd7XJcSshZN7HeH4PdBcb_v7iC",
-      "expirationTime": null,
-      "keys": {
-        "p256dh": "BMZVEjxMhnjDpjyowsHabCf2Z93jpNzoaMMfQd55CM3MZaSaSN-NImgWX1vi8wo4XPTfVBmSkjzMTJszSBJgVRc",
-        "auth": "6vZHokRr3cX81Yx1CpAggA"
-      },
-      "id": 1
-    },
-    {
-      "endpoint": "https://fcm.googleapis.com/fcm/send/cLK5M7MMAZY:APA91bHqIf-Gi2zj5TnWHdbDsBWjZYHf9PSgA_OBanYl27WSDMKe2zLzUjldFCVm07rLB4nLaqJui_nA5kwgYwS44TfUZVt-2HQIdAES-exkPQvSpv1Hay7jde4uDATcXZN-B3Nyj03y",
-      "expirationTime": null,
-      "keys": {
-        "p256dh": "BCUimjxUrszbmwCdFrAehGa9XvxRBedUQXK_mG62ypLQDZL9Vy1R7UWX_YwwEzK6OYMISiimx323UMfaGxwQTk8",
-        "auth": "BQ6bOB6SbzQQCw0CPItcLA"
-      },
-      "id": 2
-    }
-  ],
+  "subscriptions": [],
   "comments": [
     {
       "id": 1,
