@@ -136,9 +136,8 @@ const Header = () => {
         <Menu.Item key="1" onClick={ () => history.replace('/') }>Home</Menu.Item>
         <Menu.Item key="3" onClick={ () => history.replace('/about') }>About</Menu.Item>
         { 
-          'Notification' in window // Support PN
-          &&
-          <Menu.Item key="4">
+          'Notification' in window && 'serviceWorker' in navigator // Support Push Notification
+          && <Menu.Item key="4">
             <Button onClick={ askForNotificationPermission }>Enable Notifications</Button>
           </Menu.Item>
         }
