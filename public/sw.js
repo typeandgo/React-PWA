@@ -113,8 +113,12 @@ self.addEventListener('fetch', function(event) {
           clearAllData('feeds').then(function() {
             clonedRes.json()
               .then(async function(data) {
-                for await (var item of data) {
-                  writeData('feeds', item);
+                if (Array.isArray(data)) {
+                  for await (var item of data) {
+                    writeData('feeds', item);
+                  }
+                } else {
+                  writeData('feeds', data);
                 }
               })
           })
