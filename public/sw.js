@@ -11,6 +11,8 @@ var STATIC_FILES = [
   '/static/js/0.chunk.js',
   '/static/js/main.chunk.js',
   'https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap',
+  'https://fonts.gstatic.com/s/ubuntu/v15/4iCs6KVjbNBYlgoKfw72nU6AFw.woff2',
+  'https://fonts.gstatic.com/s/ubuntu/v15/4iCv6KVjbNBYlgoCjC3jsGyNPYZvgw.woff2',
   '/manifest.json',
   '/favicon.ico',
   '/images/icons/favicon-16x16.png',
@@ -94,10 +96,6 @@ self.addEventListener('fetch', function(event) {
             })
             .catch(function(err) {
               console.log('Fetch error: ', err);
-              return caches.open(CACHE_STATIC_NAME)
-                .then(function(cache) {
-                  return cache.match('/fallback');
-                })
             })
         }
       })
