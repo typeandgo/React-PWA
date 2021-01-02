@@ -105,8 +105,8 @@ self.addEventListener('fetch', function(event) {
             })
             .then(function(data) {
               if (Array.isArray(data)) {
-                for (var key in data) {
-                  writeData('feeds', data[key]);
+                for (var item of data) {
+                  writeData('feeds', item);
                 }
               } else {
                 writeData('feeds', data);
