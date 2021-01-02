@@ -30,7 +30,7 @@ const Header = () => {
         <Menu.Item key="1" onClick={ () => history.replace('/') }>Home</Menu.Item>
         <Menu.Item key="3" onClick={ () => history.replace('/about') }>About</Menu.Item>
         <Menu.Item key="4">
-          <Button onClick={ () => console.log('Notifications activated!') }>Enable Notifications</Button>
+          <Button>Enable Notifications</Button>
         </Menu.Item>
       </Menu>
       </Drawer>
